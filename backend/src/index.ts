@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from "dotenv"
+import { fetchStocksData } from './controller/stocksctrl';
+
 import { connectDataBase } from './config/database';
 dotenv.config();
 
@@ -15,4 +17,5 @@ app.use(cors());
 app.listen(PORT, async () => {
     await connectDataBase();
     console.log(`Server is running at ${PORT}`)
+    fetchStocksData();
 })
