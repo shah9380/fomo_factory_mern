@@ -14,11 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const dotenv_1 = __importDefault(require("dotenv"));
 const database_1 = require("./config/database");
 const app = (0, express_1.default)();
 const PORT = 4000;
+dotenv_1.default.config();
 app.use((0, cors_1.default)());
-(0, database_1.connectDataBase)();
 app.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, database_1.connectDataBase)();
     console.log(`Server is running at ${PORT}`);
 }));

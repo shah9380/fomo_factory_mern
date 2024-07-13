@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
+import dotenv from "dotenv"
 import { connectDataBase } from './config/database';
+dotenv.config();
 
 
 const app = express();
@@ -9,8 +11,8 @@ const PORT = 4000;
 
 app.use(cors());
 
-connectDataBase();
 
 app.listen(PORT, async () => {
+    await connectDataBase();
     console.log(`Server is running at ${PORT}`)
 })
