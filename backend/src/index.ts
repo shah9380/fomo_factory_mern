@@ -18,6 +18,6 @@ app.use(cors());
 app.listen(PORT, async () => {
     await connectDataBase();
     console.log(`Server is running at ${PORT}`)
-    cron.schedule('*/10 * * * * *', fetchStocksData);
+    cron.schedule('*/3 * * * * *', fetchStocksData);
     cron.schedule('*/3 * * * *', deleteTheData);
 })
