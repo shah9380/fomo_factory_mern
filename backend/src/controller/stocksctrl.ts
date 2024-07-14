@@ -65,16 +65,16 @@ export async function fetchStocksData(){
             const stocksData = response.data;
             
 
-            await Stock.insertMany(stocksData.map((stock: any) => ({
+            let newData = await Stock.insertMany(stocksData.map((stock: any) => ({
                 symbol: stock.name.toLowerCase(),
                 price: stock.rate
             })))
 
 
+            newData = newData.filter((item)=> item.symbol === activeSymbol)
+            // const updatedData = await Stock.find({symbol: activeSymbol}).sort({timestamp : -1}).limit(20);
 
-            const updatedData = await Stock.find({symbol: activeSymbol}).sort({timestamp : -1}).limit(20);
-
-            io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: updatedData });
+            io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: newData });
        
             //notifying the client that data as updated
             // wss.clients.forEach(client => {

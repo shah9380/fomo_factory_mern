@@ -74,12 +74,13 @@ function fetchStocksData() {
                 }
             });
             const stocksData = response.data;
-            yield Stock_1.default.insertMany(stocksData.map((stock) => ({
+            let newData = yield Stock_1.default.insertMany(stocksData.map((stock) => ({
                 symbol: stock.name.toLowerCase(),
                 price: stock.rate
             })));
-            const updatedData = yield Stock_1.default.find({ symbol: activeSymbol }).sort({ timestamp: -1 }).limit(20);
-            __1.io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: updatedData });
+            newData = newData.filter((item) => item.symbol === activeSymbol);
+            // const updatedData = await Stock.find({symbol: activeSymbol}).sort({timestamp : -1}).limit(20);
+            __1.io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: newData });
             //notifying the client that data as updated
             // wss.clients.forEach(client => {
             //     client.send(JSON.stringify({type: 'UPDATE_DATA', data: updatedData}))

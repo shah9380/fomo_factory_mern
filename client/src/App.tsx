@@ -13,7 +13,7 @@ const App: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:10000/api/stocks/data/bitcoin'); // Replace with your API endpoint
+                const response = await axios.get('http://localhost:10000/api/stocks/data/solana'); // Replace with your API endpoint
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -33,7 +33,7 @@ const App: React.FC = () => {
       socket.on("UPDATE_DATA", (message: { type: string; data: any[] }) => {
         console.log("Received Socket.IO message:", message);
         if (message.type === "UPDATE_DATA") {
-          setData(message.data);
+          setData((prev)=> [...(message.data),...(prev.slice(0, -1))] );
         }
       });
 
