@@ -46,6 +46,7 @@ const apiKeys = [
 function getCurrentApiKey() {
     const now = new Date(); //current time
     const currentHour = now.getHours(); // will give hours in a digit
+    console.log((new Date()).getHours());
     const currentApiKey = apiKeys.find(item => currentHour >= item.startHour && currentHour < item.endHour);
     if (currentApiKey) {
         return currentApiKey.key;
@@ -73,12 +74,14 @@ function fetchStocksData() {
                 }
             });
             const stocksData = response.data;
-            yield Stock_1.default.insertMany(stocksData.map((stock) => ({
+            let newData = yield Stock_1.default.insertMany(stocksData.map((stock) => ({
                 symbol: stock.name.toLowerCase(),
                 price: stock.rate
             })));
-            const updatedData = yield Stock_1.default.find({ symbol: activeSymbol }).sort({ timestamp: -1 }).limit(20);
-            __1.io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: updatedData });
+            // newData = newData.filter((item)=> item.symbol === activeSymbol)
+            // const updatedData = await Stock.find({symbol: activeSymbol}).sort({timestamp : -1}).limit(20);
+            console.log(activeSymbol);
+            __1.io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: newData });
             //notifying the client that data as updated
             // wss.clients.forEach(client => {
             //     client.send(JSON.stringify({type: 'UPDATE_DATA', data: updatedData}))
@@ -112,7 +115,8 @@ function getLatestData(req, res) {
             const { symbol } = req.params;
             console.log(req.params);
             activeSymbol = symbol;
-            const data = yield Stock_1.default.find({ symbol }).sort({ timestamp: -1 }).limit(20);
+            console.log(symbol);
+            const data = yield Stock_1.default.find({ symbol }).sort({ timestamp: -1 }).limit(21);
             res.status(200).json(data);
         }
         catch (error) {
