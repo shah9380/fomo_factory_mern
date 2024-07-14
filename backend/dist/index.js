@@ -20,32 +20,43 @@ const node_cron_1 = __importDefault(require("node-cron"));
 const stocksctrl_1 = require("./controller/stocksctrl");
 const http_1 = __importDefault(require("http"));
 const ws_1 = __importDefault(require("ws"));
+const path_1 = __importDefault(require("path"));
+// const socketIo = require('socket.io');
 const database_1 = require("./config/database");
 const stocksrouter_1 = __importDefault(require("./router/stocksrouter"));
 const body_parser_1 = __importDefault(require("body-parser"));
 dotenv_1.default.config();
+const PORT = process.env.PORT || 4000;
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
+// const io = socketIo(server);
 const wss = new ws_1.default.Server({ server });
 exports.wss = wss;
-const PORT = process.env.PORT || 4000;
 app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: '*', // Replace with your frontend URL
+    methods: ['GET', 'POST'] // Allow specific HTTP methods
+}));
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use("/api/stocks", stocksrouter_1.default);
-// wss.on('connection', (ws: WebSocket) => {
-//     console.log("client connected to websocket")
-//     const interval = setInterval(()=>{
-//         ws.send(JSON.stringify({message : 'Real time update'}))
-//     }, 3000)
-//     ws.on('close', ()=>{
-//         console.log('Client Disconnected from websoket')
-//         clearInterval(interval);
-//     })
-// })
+app.use(express_1.default.static(path_1.default.join(__dirname, "../../client/build")));
+app.get('*', (req, res) => {
+    res.sendFile(path_1.default.join(__dirname, "../../client/build", "index.html"));
+});
+// WebSocket server logic
+wss.on('connection', (ws) => {
+    console.log('Client connected to WebSocket');
+    // ws.on('message', (message: string) => {
+    //     console.log('Received WebSocket message:', message);
+    // });
+    ws.on('close', () => {
+        console.log('Client disconnected from WebSocket');
+    });
+});
 app.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, database_1.connectDataBase)();
     console.log(`Server is running at ${PORT}`);
-    node_cron_1.default.schedule('*/3 * * * * *', (0, stocksctrl_1.fetchStocksData)(wss));
+    node_cron_1.default.schedule('*/3 * * * * *', stocksctrl_1.fetchStocksData);
     node_cron_1.default.schedule('*/3 * * * *', stocksctrl_1.deleteTheData);
 }));

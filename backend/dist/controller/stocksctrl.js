@@ -18,6 +18,7 @@ exports.getLatestData = getLatestData;
 const Stock_1 = __importDefault(require("../models/Stock"));
 const axios_1 = __importDefault(require("axios"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const __1 = require("..");
 dotenv_1.default.config();
 const apiKeys = [
     {
@@ -53,7 +54,7 @@ function getCurrentApiKey() {
         return null;
     }
 }
-function fetchStocksData(wss) {
+function fetchStocksData() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const api_key = getCurrentApiKey();
@@ -77,7 +78,7 @@ function fetchStocksData(wss) {
             })));
             //notifying the client that data as updated
             const updatedData = yield Stock_1.default.find({}).sort({ timestamp: -1 }).limit(20);
-            wss.clients.forEach(client => {
+            __1.wss.clients.forEach(client => {
                 client.send(JSON.stringify({ type: 'UPDATE_DATA', data: updatedData }));
             });
             console.log("data fetched and successfully stored");
