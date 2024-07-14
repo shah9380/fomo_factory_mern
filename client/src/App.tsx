@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
+import io from "socket.io-client";
+
+const socket = io('https://fomo-factory-2jei.onrender.com');
 
 const App: React.FC = () => {
     const [data, setData] = useState<any[]>([]); // Replace `any[]` with your data type
@@ -21,31 +24,52 @@ const App: React.FC = () => {
 
     // WebSocket connection
     useEffect(() => {
-        const ws = new WebSocket('wss://fomo-factory-2jei.onrender.com'); // Replace with your WebSocket server URL
+        console.log("connecting to data base")
+      socket.on("connect", () => {
+        console.log("Connected to Socket.IO");
+      });
 
-        ws.onopen = () => {
-            console.log('Connected to WebSocket');
-        };
+      socket.on("UPDATE_DATA", (message: { type: string; data: any[] }) => {
+        console.log("Received Socket.IO message:", message);
+        if (message.type === "UPDATE_DATA") {
+          setData(message.data);
+        }
+      });
 
-        ws.onmessage = (event) => {
-            const message = JSON.parse(event.data);
-            console.log('Received WebSocket message:', message);
+      socket.on("disconnect", () => {
+        console.log("Disconnected from Socket.IO");
+      });
 
-            // Update state with new data
-            setData(message.data);
-        };
+      return () => {
+        socket.off("connect");
+        socket.off("UPDATE_DATA");
+        socket.off("disconnect");
+      };
+        // const ws = new WebSocket('wss://fomo-factory-2jei.onrender.com'); // Replace with your WebSocket server URL
 
-        ws.onerror = (error) => {
-            console.error('WebSocket error:', error);
-        };
+        // ws.onopen = () => {
+        //     console.log('Connected to WebSocket');
+        // };
 
-        ws.onclose = () => {
-            console.log('Disconnected from WebSocket');
-        };
+        // ws.onmessage = (event) => {
+        //     const message = JSON.parse(event.data);
+        //     console.log('Received WebSocket message:', message);
 
-        return () => {
-            ws.close();
-        };
+        //     // Update state with new data
+        //     setData(message.data);
+        // };
+
+        // ws.onerror = (error) => {
+        //     console.error('WebSocket error:', error);
+        // };
+
+        // ws.onclose = () => {
+        //     console.log('Disconnected from WebSocket');
+        // };
+
+        // return () => {
+        //     ws.close();
+        // };
     }, []);
 
     return (

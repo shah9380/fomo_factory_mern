@@ -1,7 +1,7 @@
 import Stock from '../models/Stock'
 import axios from 'axios'
 import dotenv from "dotenv"
-import { wss } from '..';
+import { io, wss } from '..';
 
 
 dotenv.config();
@@ -66,9 +66,12 @@ export async function fetchStocksData(){
                 symbol: stock.name.toLowerCase(),
                 price: stock.rate
             })))
+
+            const updatedData = await Stock.find({}).sort({timestamp : -1}).limit(20);
+
+            await io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: updatedData });
        
             //notifying the client that data as updated
-            const updatedData = await Stock.find({}).sort({timestamp : -1}).limit(20);
             wss.clients.forEach(client => {
                 client.send(JSON.stringify({type: 'UPDATE_DATA', data: updatedData}))
             })
