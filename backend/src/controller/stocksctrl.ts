@@ -34,7 +34,7 @@ const apiKeys = [
 function getCurrentApiKey(){
     const now = new Date(); //current time
     const currentHour = now.getHours(); // will give hours in a digit
-    console.log(currentHour);
+    console.log((new Date()).getHours());
     const currentApiKey = apiKeys.find(item => currentHour >= item.startHour && currentHour < item.endHour);
 
     if(currentApiKey){
