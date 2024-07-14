@@ -9,7 +9,7 @@ const App: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:10000/api/stocks/data/bitcoin'); // Replace with your API endpoint
+                const response = await axios.get('https://fomo-factory-2jei.onrender.com/api/stocks/data/bitcoin'); // Replace with your API endpoint
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -21,7 +21,7 @@ const App: React.FC = () => {
 
     // WebSocket connection
     useEffect(() => {
-        const ws = new WebSocket('ws://localhost:10000'); // Replace with your WebSocket server URL
+        const ws = new WebSocket('ws://fomo-factory-2jei.onrender.com'); // Replace with your WebSocket server URL
 
         ws.onopen = () => {
             console.log('Connected to WebSocket');
