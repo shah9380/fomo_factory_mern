@@ -4,8 +4,8 @@ import axios from 'axios';
 import './App.css';
 import io from "socket.io-client";
 
-// const socket = io('https://fomo-factory-2jei.onrender.com');
-const socket = io('http://localhost:10000');
+const socket = io('https://fomo-factory-2jei.onrender.com');
+// const socket = io('http://localhost:10000');
 
 const App: React.FC = () => {
     const [data, setData] = useState<any[]>([]); // Replace `any[]` with your data type
@@ -13,7 +13,7 @@ const App: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:10000/api/stocks/data/bitcoin'); // Replace with your API endpoint
+                const response = await axios.get('https://fomo-factory-2jei.onrender.com/api/stocks/data/bitcoin'); // Replace with your API endpoint
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
