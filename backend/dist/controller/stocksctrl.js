@@ -20,6 +20,7 @@ const axios_1 = __importDefault(require("axios"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const __1 = require("..");
 dotenv_1.default.config();
+let activeSymbol = 'bitcoin';
 const apiKeys = [
     {
         key: process.env.API_KEY_1,
@@ -76,12 +77,12 @@ function fetchStocksData() {
                 symbol: stock.name.toLowerCase(),
                 price: stock.rate
             })));
-            const updatedData = yield Stock_1.default.find({}).sort({ timestamp: -1 }).limit(20);
+            const updatedData = yield Stock_1.default.find({ symbol: activeSymbol }).sort({ timestamp: -1 }).limit(20);
             __1.io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: updatedData });
             //notifying the client that data as updated
-            __1.wss.clients.forEach(client => {
-                client.send(JSON.stringify({ type: 'UPDATE_DATA', data: updatedData }));
-            });
+            // wss.clients.forEach(client => {
+            //     client.send(JSON.stringify({type: 'UPDATE_DATA', data: updatedData}))
+            // })
             console.log("data fetched and successfully stored");
             //for clearing purpose
             // await Stock.deleteMany()
@@ -110,6 +111,7 @@ function getLatestData(req, res) {
         try {
             const { symbol } = req.params;
             console.log(req.params);
+            activeSymbol = symbol;
             const data = yield Stock_1.default.find({ symbol }).sort({ timestamp: -1 }).limit(20);
             res.status(200).json(data);
         }
