@@ -5,6 +5,7 @@ import './App.css';
 import io from "socket.io-client";
 
 const socket = io('https://fomo-factory-2jei.onrender.com');
+// const socket = io('http://localhost:10000');
 
 const App: React.FC = () => {
     const [data, setData] = useState<any[]>([]); // Replace `any[]` with your data type
@@ -20,13 +21,6 @@ const App: React.FC = () => {
         };
 
         fetchData();
-        const interval = setInterval(()=>{
-            fetchData();
-        },3000);
-
-        return()=>{
-            clearInterval(interval);
-        }
     }, []);
 
     // WebSocket connection
@@ -52,31 +46,6 @@ const App: React.FC = () => {
         socket.off("UPDATE_DATA");
         socket.off("disconnect");
       };
-        // const ws = new WebSocket('wss://fomo-factory-2jei.onrender.com'); // Replace with your WebSocket server URL
-
-        // ws.onopen = () => {
-        //     console.log('Connected to WebSocket');
-        // };
-
-        // ws.onmessage = (event) => {
-        //     const message = JSON.parse(event.data);
-        //     console.log('Received WebSocket message:', message);
-
-        //     // Update state with new data
-        //     setData(message.data);
-        // };
-
-        // ws.onerror = (error) => {
-        //     console.error('WebSocket error:', error);
-        // };
-
-        // ws.onclose = () => {
-        //     console.log('Disconnected from WebSocket');
-        // };
-
-        // return () => {
-        //     ws.close();
-        // };
 
     }, []);
 

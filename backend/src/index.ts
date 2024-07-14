@@ -3,10 +3,9 @@ import cors from 'cors';
 import dotenv from "dotenv"
 import cron from 'node-cron'
 import { fetchStocksData, deleteTheData } from './controller/stocksctrl';
-import http from 'http';
-import WebSocket from 'ws';
+// import http from 'http';
 import path from 'path';
-// import https from "https";
+import https from "https";
 const socketIo = require('socket.io');
 
 import { connectDataBase } from './config/database';
@@ -17,16 +16,16 @@ dotenv.config();
 const PORT = process.env.PORT || 4000;
 
 const app = express();
-const server = http.createServer(app);
-// const server = https.createServer(app);
+// const server = http.createServer(app);
+const server = https.createServer(app);
 const io = socketIo(server);
-const wss : WebSocket.Server = new WebSocket.Server({server});
+// const wss : WebSocket.Server = new WebSocket.Server({server});
 
 
 app.use(cors());
 app.use(cors({
-    origin: '*', // Replace with your frontend URL
-    methods: ['GET', 'POST'] // Allow specific HTTP methods
+    origin: '*', 
+    methods: ['GET', 'POST']
 }));
 
 
@@ -55,7 +54,7 @@ app.get('*', (req, res)=>{
 //     });
 // });
 
-app.listen(PORT, async () => {
+server.listen(PORT, async () => {
     await connectDataBase();
     io.on('connection', (socket: any) => {
         console.log('Client connected to Socket.IO');
@@ -70,4 +69,4 @@ app.listen(PORT, async () => {
 })
 
 
-export { wss, io };
+export { io };

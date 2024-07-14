@@ -1,10 +1,12 @@
 import Stock from '../models/Stock'
 import axios from 'axios'
 import dotenv from "dotenv"
-import { io, wss } from '..';
+import { io } from '..';
 
 
 dotenv.config();
+
+let activeSymbol = 'bitcoin'
 
 const apiKeys = [
     {
@@ -67,14 +69,16 @@ export async function fetchStocksData(){
                 price: stock.rate
             })))
 
-            const updatedData = await Stock.find({}).sort({timestamp : -1}).limit(20);
+
+
+            const updatedData = await Stock.find({symbol: activeSymbol}).sort({timestamp : -1}).limit(20);
 
             io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: updatedData });
        
             //notifying the client that data as updated
-            wss.clients.forEach(client => {
-                client.send(JSON.stringify({type: 'UPDATE_DATA', data: updatedData}))
-            })
+            // wss.clients.forEach(client => {
+            //     client.send(JSON.stringify({type: 'UPDATE_DATA', data: updatedData}))
+            // })
             console.log("data fetched and successfully stored");
 
             //for clearing purpose
@@ -101,6 +105,7 @@ export async function getLatestData(req : any, res: any){
     try {
         const {symbol} = req.params;
         console.log(req.params);
+        activeSymbol = symbol;
         const data = await Stock.find({ symbol }).sort({timestamp : -1}).limit(20);
         res.status(200).json(data);
     } catch (error) {
