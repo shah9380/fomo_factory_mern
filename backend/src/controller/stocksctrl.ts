@@ -1,29 +1,27 @@
 import Stock from '../models/Stock'
 import axios from 'axios'
+import dotenv from "dotenv"
 
-const api_key_1 = 'f75a8bf3-8037-4c7f-ac56-ce8fd605f95e' //
-const api_key_2 = '6b35a59e-afc2-4a0b-9e12-c9ddc9129c53' //
-const api_key_3 = 'fda7544f-39bb-4e03-8c05-abc3c46dd16d' //
-const api_key_4 = 'f97b30e3-0af5-4407-9d6f-fde6dbd4e81e' //
+dotenv.config();
 
 const apiKeys = [
     {
-        key: 'f75a8bf3-8037-4c7f-ac56-ce8fd605f95e',
+        key: process.env.API_KEY_1,
         startHour: 0,
         endHour: 6
     },
     {
-        key: '6b35a59e-afc2-4a0b-9e12-c9ddc9129c53',
+        key: process.env.API_KEY_2,
         startHour: 6,
         endHour: 12
     },
     {
-        key: 'fda7544f-39bb-4e03-8c05-abc3c46dd16d',
+        key: process.env.API_KEY_3,
         startHour: 12,
         endHour: 18
     },
     {
-        key: 'f97b30e3-0af5-4407-9d6f-fde6dbd4e81e',
+        key: process.env.API_KEY_4,
         startHour: 18,
         endHour: 24
     }
