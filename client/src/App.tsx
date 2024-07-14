@@ -21,7 +21,7 @@ const App: React.FC = () => {
 
     // WebSocket connection
     useEffect(() => {
-        const ws = new WebSocket('ws://fomo-factory-2jei.onrender.com'); // Replace with your WebSocket server URL
+        const ws = new WebSocket('wss://fomo-factory-2jei.onrender.com'); // Replace with your WebSocket server URL
 
         ws.onopen = () => {
             console.log('Connected to WebSocket');
