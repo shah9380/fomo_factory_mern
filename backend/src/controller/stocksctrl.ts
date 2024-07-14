@@ -1,6 +1,8 @@
 import Stock from '../models/Stock'
 import axios from 'axios'
 import dotenv from "dotenv"
+import { wss } from '..';
+
 
 dotenv.config();
 
@@ -65,10 +67,15 @@ export async function fetchStocksData(){
                 price: stock.rate
             })))
        
+            //notifying the client that data as updated
+            const updatedData = await Stock.find({}).sort({timestamp : -1}).limit(20);
+            wss.clients.forEach(client => {
+                client.send(JSON.stringify({type: 'UPDATE_DATA', data: updatedData}))
+            })
+            console.log("data fetched and successfully stored");
 
             //for clearing purpose
             // await Stock.deleteMany()
-            console.log("data fetched and successfully stored");
 
     } catch (error) {
         console.log(error)

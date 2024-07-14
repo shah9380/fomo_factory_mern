@@ -14,12 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectDataBase = connectDataBase;
 const mongoose_1 = __importDefault(require("mongoose"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const MONGODB_URI = process.env.MONGODB_URI;
 function connectDataBase() {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(MONGODB_URI, "dfnsdf");
         try {
-            console.log(MONGODB_URI, "dfnsdf");
             yield mongoose_1.default.connect(MONGODB_URI);
             console.log("connected to database");
         }
