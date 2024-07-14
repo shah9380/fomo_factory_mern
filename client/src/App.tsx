@@ -13,7 +13,7 @@ const App: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://fomo-factory-mern.onrender.com//api/stocks/data/bitcoin'); // Replace with your API endpoint
+                const response = await axios.get('https://fomo-factory-mern.onrender.com/api/stocks/data/bitcoin'); // Replace with your API endpoint
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
