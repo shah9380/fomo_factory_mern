@@ -18,6 +18,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "fomo_factory_mern": "file:..",
     "mongoose": "^8.5.1",
     "node-cron": "^3.0.3",
     "path": "^0.12.7",

@@ -18,9 +18,9 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const node_cron_1 = __importDefault(require("node-cron"));
 const stocksctrl_1 = require("./controller/stocksctrl");
-// import http from 'http';
+const http_1 = __importDefault(require("http"));
 const path_1 = __importDefault(require("path"));
-const https_1 = __importDefault(require("https"));
+// import https from "https";
 const socketIo = require('socket.io');
 const database_1 = require("./config/database");
 const stocksrouter_1 = __importDefault(require("./router/stocksrouter"));
@@ -28,8 +28,8 @@ const body_parser_1 = __importDefault(require("body-parser"));
 dotenv_1.default.config();
 const PORT = process.env.PORT || 4000;
 const app = (0, express_1.default)();
-// const server = http.createServer(app);
-const server = https_1.default.createServer(app);
+const server = http_1.default.createServer(app);
+// const server = https.createServer(app);
 const io = socketIo(server);
 exports.io = io;
 // const wss : WebSocket.Server = new WebSocket.Server({server});
@@ -45,16 +45,6 @@ app.use(express_1.default.static(path_1.default.join(__dirname, "../../client/bu
 app.get('*', (req, res) => {
     res.sendFile(path_1.default.join(__dirname, "../../client/build", "index.html"));
 });
-// WebSocket server logic
-// wss.on('connection', (ws: WebSocket) => {
-//     console.log('Client connected to WebSocket');
-//     // ws.on('message', (message: string) => {
-//     //     console.log('Received WebSocket message:', message);
-//     // });
-//     ws.on('close', () => {
-//         console.log('Client disconnected from WebSocket');
-//     });
-// });
 server.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, database_1.connectDataBase)();
     io.on('connection', (socket) => {
