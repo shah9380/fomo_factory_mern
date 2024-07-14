@@ -13,17 +13,17 @@ const apiKeys = [
         endHour: 6
     },
     {
-        key: 'f75a8bf3-8037-4c7f-ac56-ce8fd605f95e',
+        key: '6b35a59e-afc2-4a0b-9e12-c9ddc9129c53',
         startHour: 6,
         endHour: 12
     },
     {
-        key: 'f75a8bf3-8037-4c7f-ac56-ce8fd605f95e',
+        key: 'fda7544f-39bb-4e03-8c05-abc3c46dd16d',
         startHour: 12,
         endHour: 18
     },
     {
-        key: 'f75a8bf3-8037-4c7f-ac56-ce8fd605f95e',
+        key: 'f97b30e3-0af5-4407-9d6f-fde6dbd4e81e',
         startHour: 18,
         endHour: 24
     }
@@ -46,6 +46,7 @@ function getCurrentApiKey(){
 export async function fetchStocksData(){
     try {
             const api_key = getCurrentApiKey();
+            // console.log(api_key);
             const response = await axios.post('https://api.livecoinwatch.com/coins/list', {
                 currency: "USD",
                 sort: "rank",
@@ -62,7 +63,7 @@ export async function fetchStocksData(){
             
 
             await Stock.insertMany(stocksData.map((stock: any) => ({
-                symbol: stock.name,
+                symbol: stock.name.toLowerCase(),
                 price: stock.rate
             })))
        
@@ -85,5 +86,16 @@ export async function deleteTheData(){
         console.log("all data has been deleted")
     } catch (error) {
         console.error("error in deleting the data", error);
+    }
+}
+
+export async function getLatestData(req : any, res: any){
+    try {
+        const {symbol} = req.params;
+        console.log(req.params);
+        const data = await Stock.find({ symbol }).sort({timestamp : -1}).limit(20);
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("unable to fetch the data : error ", error);
     }
 }
