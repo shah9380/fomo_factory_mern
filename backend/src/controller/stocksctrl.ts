@@ -69,7 +69,7 @@ export async function fetchStocksData(){
 
             const updatedData = await Stock.find({}).sort({timestamp : -1}).limit(20);
 
-            await io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: updatedData });
+            io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: updatedData });
        
             //notifying the client that data as updated
             wss.clients.forEach(client => {

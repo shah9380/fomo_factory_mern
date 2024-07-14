@@ -77,7 +77,7 @@ function fetchStocksData() {
                 price: stock.rate
             })));
             const updatedData = yield Stock_1.default.find({}).sort({ timestamp: -1 }).limit(20);
-            yield __1.io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: updatedData });
+            __1.io.emit('UPDATE_DATA', { type: 'UPDATE_DATA', data: updatedData });
             //notifying the client that data as updated
             __1.wss.clients.forEach(client => {
                 client.send(JSON.stringify({ type: 'UPDATE_DATA', data: updatedData }));

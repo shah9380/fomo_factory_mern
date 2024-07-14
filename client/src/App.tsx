@@ -20,11 +20,18 @@ const App: React.FC = () => {
         };
 
         fetchData();
+        const interval = setInterval(()=>{
+            fetchData();
+        },3000);
+
+        return()=>{
+            clearInterval(interval);
+        }
     }, []);
 
     // WebSocket connection
     useEffect(() => {
-        console.log("connecting to data base")
+
       socket.on("connect", () => {
         console.log("Connected to Socket.IO");
       });
@@ -70,6 +77,7 @@ const App: React.FC = () => {
         // return () => {
         //     ws.close();
         // };
+
     }, []);
 
     return (
