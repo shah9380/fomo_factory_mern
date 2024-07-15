@@ -32,9 +32,12 @@ const apiKeys = [
 ]
 
 function getCurrentApiKey(){
-    const now = new Date(); //current time
-    const currentHour = now.getHours(); // will give hours in a digit
-    console.log((new Date()).getHours());
+    const indiaTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+const date = new Date(indiaTime);
+const currentHour = date.getHours();
+
+console.log(currentHour);
+    
     const currentApiKey = apiKeys.find(item => currentHour >= item.startHour && currentHour < item.endHour);
 
     if(currentApiKey){
