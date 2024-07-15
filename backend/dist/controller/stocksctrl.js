@@ -43,10 +43,12 @@ const apiKeys = [
         endHour: 24
     }
 ];
+let currentIndex = 0;
 function getCurrentApiKey() {
-    const now = new Date(); //current time
-    const currentHour = now.getHours(); // will give hours in a digit
-    console.log((new Date()).getHours());
+    const indiaTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+    const date = new Date(indiaTime);
+    const currentHour = date.getHours();
+    console.log(currentHour);
     const currentApiKey = apiKeys.find(item => currentHour >= item.startHour && currentHour < item.endHour);
     if (currentApiKey) {
         return currentApiKey.key;
@@ -56,11 +58,21 @@ function getCurrentApiKey() {
         return null;
     }
 }
+function getPiKey() {
+    currentIndex++;
+    if (currentIndex < apiKeys.length) {
+        return apiKeys[currentIndex].key;
+    }
+    else {
+        currentIndex = 0;
+        return apiKeys[currentIndex].key;
+    }
+}
 function fetchStocksData() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const api_key = getCurrentApiKey();
-            // console.log(api_key);
+            const api_key = getPiKey();
+            console.log(api_key);
             const response = yield axios_1.default.post('https://api.livecoinwatch.com/coins/list', {
                 currency: "USD",
                 sort: "rank",

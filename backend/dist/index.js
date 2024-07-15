@@ -54,6 +54,6 @@ server.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
         });
     });
     console.log(`Server is running at ${PORT}`);
-    node_cron_1.default.schedule('*/3 * * * * *', stocksctrl_1.fetchStocksData);
+    node_cron_1.default.schedule('*/4 * * * * *', stocksctrl_1.fetchStocksData);
     node_cron_1.default.schedule('*/3 * * * *', stocksctrl_1.deleteTheData);
 }));
