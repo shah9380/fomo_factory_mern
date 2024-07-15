@@ -66,7 +66,7 @@ const PriceTable: React.FC = () => {
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
         {/* <div className='bg-gray-800 rounded-md table-auto flex justify-center items-center p-4 text-center'> */}
-        <table className="min-w-[380px] text-center rounded-xl m-4">
+        <table className="w-[350px] text-center rounded-xl m-4">
           <thead>
             <tr className="border-t-4 border-b-2 bg-slate-900 border-black font-thin border-separate border-spacing-y-4 border-spacing-x-0">
               <th className="py-2 font-normal">#</th>
