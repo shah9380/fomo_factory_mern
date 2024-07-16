@@ -52,8 +52,8 @@ server.listen(PORT, async () => {
         });
     });
     console.log(`Server is running at ${PORT}`)
-    cron.schedule('*/4 * * * * *', fetchStocksData);
-    cron.schedule('*/3 * * * *', deleteTheData);
+    cron.schedule('*/12 * * * * *', fetchStocksData);
+    cron.schedule('*/5 * * * *', deleteTheData);
 })
 
 
