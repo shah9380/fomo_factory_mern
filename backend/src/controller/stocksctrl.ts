@@ -8,6 +8,8 @@ dotenv.config();
 
 let activeSymbol = 'bitcoin'
 
+const API_KEY_5 = 'f97b30e3-0af5-4407-9d6f-fde6dbd4e81e'
+
 const apiKeys = [
     {
         key: process.env.API_KEY_1,
@@ -74,7 +76,7 @@ export async function fetchStocksData(){
                 meta: true
             }, {
                 headers: {
-                    'x-api-key': `${api_key}`
+                    'x-api-key': `${API_KEY_5}`
                 }
             })
             const stocksData = response.data;
