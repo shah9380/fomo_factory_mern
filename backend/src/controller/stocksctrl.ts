@@ -8,7 +8,7 @@ dotenv.config();
 
 let activeSymbol = 'bitcoin'
 
-const API_KEY_5 = '21438257-1dcd-4d54-8dbb-4ad9dd4d11e2';
+const API_KEY_5 = '254d3028-c66c-4154-967a-dd516e51476d';
 
 const apiKeys = [
     {
